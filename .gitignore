@@ -1,0 +1,28 @@
+# Archivos de configuración y secretos sensibles
+.env
+.env.txt
+.env.local
+.env.*.local
+
+# Directorios de dependencias de Node
+node_modules/
+
+# Directorios de Build/Salida
+dist/
+build/
+coverage/
+
+# Archivos de logs y temporales
+*.log
+npm-debug.log*
+npm-error.log
+tmp/
+*.sqlite
+
+# Directorios de VS Code y editores
+.vscode/
+.idea/
+
+# Binarios y dumps del SO (opcional)
+.DS_Store
+Thumbs.db
