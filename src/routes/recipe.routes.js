@@ -234,6 +234,39 @@ router.put('/:id', authMiddleware.verifyToken, recipeController.updateRecipe); /
 router.put('/:id/restore', authMiddleware.verifyToken, recipeController.restoreRecipe); // PUT /api/recipes/{id}/restore
 //  DELETE /api/recipes/{id}
 
+/**
+ * @swagger
+ * /api/recipes/{id}/status:
+ *   put:
+ *     summary: Administrador - Aprobar o Rechazar la publicación de una receta.
+ *     tags: [Administración]
+ *     description: Cambia el Estado_Publicacion de la receta a 'Publicada' o 'Rechazada'.
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: integer }
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [nuevo_estado]
+ *             properties:
+ *               nuevo_estado:
+ *                 type: string
+ *                 enum: [Publicada, Rechazada]
+ *               notas_revisor:
+ *                 type: string
+ *     responses:
+ *       '200':
+ *         description: Estado de la receta actualizado correctamente.
+ *       '403':
+ *         description: Acceso denegado (No es Admin).
+ */
 router.put(
     '/:id/status', 
     authMiddleware.verifyToken, 

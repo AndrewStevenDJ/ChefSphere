@@ -92,3 +92,24 @@ exports.login = async (req, res) => {
         res.status(500).json({ message: 'Error interno del servidor al autenticar.' });
     }
 };
+
+exports.getMe = async (req, res) => {
+    // El ID del usuario está en el token, adjunto por verifyToken
+    const ID_Usuario = req.user.id; 
+
+    try {
+        // Obtenemos los datos esenciales (sin el hash de la contraseña)
+        const sql = 'SELECT ID_Usuario, Nombre, Apellido, Email, Rol FROM USUARIO WHERE ID_Usuario = ?';
+        const user = await db.query(sql, [ID_Usuario]);
+
+        if (user.length === 0) {
+            return res.status(404).json({ message: 'Usuario no encontrado.' });
+        }
+        
+        res.status(200).json({ success: true, data: user[0] });
+
+    } catch (error) {
+        console.error('Error al obtener datos del usuario:', error.message);
+        res.status(500).json({ message: 'Error interno del servidor.' });
+    }
+};

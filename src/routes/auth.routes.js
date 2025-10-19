@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/auth.controller');
+const authMiddleware = require('../../middleware/auth.middleware'); 
 
 
 /**
@@ -97,5 +98,50 @@ router.post('/login', authController.login); // <-- Doc now immediately precedes
 
 // POST /api/auth/logout (Opcional: si usas tokens, solo necesitas que el cliente lo elimine)
 // router.post('/logout', authController.logout);
+
+
+/**
+ * @swagger
+ * /api/auth/me:
+ *   get:
+ *     summary: Obtener la información del usuario autenticado.
+ *     tags: [Autenticación]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       '200':
+ *         description: Retorna la información de la cuenta (ID, Nombre, Apellido, Email, Rol).
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     ID_Usuario:
+ *                       type: integer
+ *                       example: 1
+ *                     Nombre:
+ *                       type: string
+ *                       example: Juan
+ *                     Apellido:
+ *                       type: string
+ *                       example: Pérez
+ *                     Email:
+ *                       type: string
+ *                       example: juan.perez@test.com
+ *                     Rol:
+ *                       type: string
+ *                       example: Lector
+ *       '401':
+ *         description: Token ausente o inválido.
+ *       '404':
+ *         description: Usuario no encontrado.
+ */
+router.get('/me', authMiddleware.verifyToken, authController.getMe); // GET /api/auth/me
 
 module.exports = router;
