@@ -4,7 +4,17 @@ const swaggerSpec = require('./src/config/swagger.config'); // <-- NUEVA Importa
 // server.js o app.js
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const port = 3000;
+
+const corsOptions = {
+    origin: 'http://localhost:5173', // Solo permite peticiones desde tu frontend React
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true, // Importante para enviar cookies/tokens si fuera necesario
+    optionsSuccessStatus: 204
+};
+
+app.use(cors(corsOptions)); // <-- APLICA EL MIDDLEWARE
 
 // MIDDLEWARE ESENCIAL
 app.use(express.json()); // Permite a Express leer cuerpos JSON de peticiones
